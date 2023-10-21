@@ -208,3 +208,4 @@ Do note, if you're registering your item in your plugin's OnEnabled() method, yo
  - Dimenzio for the SpawnGrenade method
  - Michal78900 for SCP-1499
  - SebasCapo for slight API rework.
+ - Joker119 for maintaning the plugin
