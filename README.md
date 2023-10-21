@@ -15,15 +15,19 @@ LJ-119 | 3 | An injection of lethal chemicals that, when injected, immediately k
 LC-119 | 4 | This coin, when dropped while inside the Pocket Dimension, will immediately vanish. For the remainder of the round, whenever a player enters the Pocket Dimension, the coin will spawn in front of one of the correct entrances for a few seconds before vanishing again. This effect has a cooldown.
 MG-119 | 5 | This gun is modified to fire self-injecting projectile darts. When fired at friendly targets, it will heal them. When fired at SCP-049-2, it will slowly begin to 'cure' them, repeated applications will eventually revert the SCP-049-2 to their human state. Has no effect on other hostile targets.
 SCP-127 | 6 | A gun that slowly regenerates it's clip over time, but trying to reload it normally has no effect.
-SG-119 | 7 | A shotgun. Fairly self-explanatory.
-SR-119 | 8 | A sniper rifle. Also self-explanatory.
+SCP-1499 | 7 | The gas mask that teleports you to another dimension, when you put it on.
+SR-119 | 8 | A sniper rifle. Deals 90 Damage per round, 3 rounds in magazine, 1.25x more damage dealt to SCP targets.
 TG-119 | 9 | This gun is also modified to fire self-injecting projectile darts. When fired at a hostile target, it will tranquilize them, rendering them unconscious for several seconds.
-Rock | 10 | This is a rock. Left-click to melee someone in the face with it. Left-click to toss it a short distance.
-SCP-1499 | 11 | The gas mask that teleports you to another dimension, when you put it on.
-SCP-714 | 12 | A coin that, when held in your hand, makes you invulnerable to SCP-049 and SCP-049-2. However, as you hold the coin, your stamina will slowly drain. If you run out, your health will start to drain.
-AM-119 | 13 | Pills that, when consumed, make you forget SCP-096's face if you have recently seen it. Removing you from being one of his targets, with some side effects.
-SCP-2818 | 14 | A weapon that, when fired, will convert the entire biomass of it's shooter into the ammunition it fires.
-C4-119 | 15 | A frag-grenade with a much longer than normal fuse, that will stick to the first solid surface it comes in contact with. It can be detonated using a console command. ".detonate"
+SCP-714 | 10 | A coin that, when held in your hand, makes you invulnerable to SCP-049 and SCP-049-2. However, as you hold the coin, your stamina will slowly drain. If you run out, your health will start to drain.
+AM-119 | 11 | Pills that, when consumed, make you forget SCP-096's face if you have recently seen it. Removing you from being one of his targets, with some side effects.
+SCP-2818 | 12 | A weapon that, when fired, will convert the entire biomass of it's shooter into the ammunition it fires.
+C4-119 | 13 | A frag-grenade with a much longer than normal fuse, that will stick to the first solid surface it comes in contact with. It can be detonated using a console command. ".detonate"
+Auto Gun | 14 | An auto aim gun that shoots at anyone close to vicinity of you on the opposite team.
+Deflector Shield | 15 | A deflector shield that reflects bullets back at the shooter.
+Hat of Disguise | 16 | The Hat that changes your appearance, when you put it on.
+Tgun | 17 | When this weapon is fired, it teleports yourself randomly around the map with penalty of 50 hp.
+[REDACTED] | 18 | [REDACTED].
+
 
 ### Item Configs
 Config settings for the individual items will ***NOT*** be found in the default plugin config file. Instead they will be located in ~/.config/EXILED/Configs/CustomItems on Linux or %AppData%\EXILED\Configs\CustomItems on Winblows.
