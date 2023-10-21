@@ -26,7 +26,8 @@ Auto Gun | 14 | An auto aim gun that shoots at anyone close to vicinity of you o
 Deflector Shield | 15 | A deflector shield that reflects bullets back at the shooter.
 Hat of Disguise | 16 | The Hat that changes your appearance, when you put it on.
 Tgun | 17 | When this weapon is fired, it teleports yourself randomly around the map with penalty of 50 hp.
-[REDACTED] | 18 | [REDACTED].
+SCP 500B | 18 | Pills that, when consumed, changes your team to opposite team (example: d class > scientist , mtf > chaos) Perfect for betraying your team!
+[REDACTED] | 19 | [REDACTED].
 
 
 ### Item Configs
