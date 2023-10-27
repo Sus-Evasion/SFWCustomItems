@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Scp1499.cs" company="Joker119">
 // Copyright (c) Joker119. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -38,10 +38,10 @@ public class HatofDisguise : CustomItem
     /// <inheritdoc/>
     public override float Weight { get; set; } = 1.5f;
 
-    public AppearanceManager AppearanceOptions { get; set; } = new();
+    public AppearanceManager AppearanceOptions { get; set; } = new ();
 
     /// <inheritdoc/>
-    public override SpawnProperties? SpawnProperties { get; set; } = new()
+    public override SpawnProperties? SpawnProperties { get; set; } = new ()
     {
         Limit = 1,
         DynamicSpawnPoints = new List<DynamicSpawnPoint>
@@ -49,7 +49,7 @@ public class HatofDisguise : CustomItem
             new ()
             {
                 Chance = 100,
-                Location = SpawnLocationType.Inside173Gate,
+                Location = SpawnLocationType.InsideGr18,
             },
         },
     };
