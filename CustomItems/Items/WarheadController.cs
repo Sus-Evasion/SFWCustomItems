@@ -113,7 +113,7 @@ public class WarheadController : CustomItem
 
     private void OnVoiceChatting(VoiceChattingEventArgs ev)
     {
-        if (ev.VoiceMessage.Channel == VoiceChatChannel.Radio && (Check(ev.Player.CurrentItem) && ev.Player.CurrentItem.Base.name == "REDACTED"))
+        if (ev.VoiceMessage.Channel == VoiceChatChannel.Radio && Check(ev.Player.CurrentItem))
         {
             RadioWarheadManager.TriggerEvent(ev.Player, Warhead.IsInProgress, Warhead.IsDetonated);
         }
@@ -121,7 +121,7 @@ public class WarheadController : CustomItem
 
     private void OnUsingRadio(UsingRadioBatteryEventArgs ev)
     {
-        if (Check(ev.Item) && ev.Item.Base.name == "REDACTED")
+        if (Check(ev.Item))
         {
             ev.Radio.BatteryLevel = 100;
         }
