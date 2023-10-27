@@ -5,6 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -14,6 +15,8 @@ using Exiled.API.Features.Attributes;
 using Exiled.API.Features.Spawn;
 using Exiled.CustomItems.API.Features;
 using Exiled.Events.EventArgs.Player;
+using Interactables.Interobjects;
+using InventorySystem.Items.Firearms.BasicMessages;
 using PlayerRoles;
 using PlayerStatsSystem;
 
@@ -41,7 +44,7 @@ public class MediGun : CustomWeapon
     public override float Damage { get; set; }
 
     /// <inheritdoc/>
-    public override byte ClipSize { get; set; } = 15;
+    public override byte ClipSize { get; set; } = 10;
 
     /// <summary>
     /// Gets or sets a value indicating whether or not to allow friendly fire with this weapon on FF-enabled servers.
@@ -51,7 +54,7 @@ public class MediGun : CustomWeapon
     /// <inheritdoc/>
     public override SpawnProperties? SpawnProperties { get; set; } = new()
     {
-        Limit = 1,
+        Limit = 2,
         DynamicSpawnPoints = new List<DynamicSpawnPoint>
         {
             new()
@@ -62,12 +65,12 @@ public class MediGun : CustomWeapon
             new()
             {
                 Chance = 50,
-                Location = SpawnLocationType.InsideGateA,
+                Location = SpawnLocationType.Inside330Chamber,
             },
             new()
             {
                 Chance = 50,
-                Location = SpawnLocationType.InsideGateB,
+                Location = SpawnLocationType.InsideLocker,
             },
         },
     };
@@ -88,13 +91,13 @@ public class MediGun : CustomWeapon
     /// Gets or sets the % of damage the weapon would normally deal, that is converted into healing. 1 = 100%, 0.5 = 50%, 0.0 = 0%.
     /// </summary>
     [Description("The % of damage the weapon would normally deal, that is converted into healing. 1 = 100%, 0.5 = 50%, 0.0 = 0%")]
-    public float HealingModifier { get; set; } = 1.25f;
+    public float HealingModifier { get; set; } = 2f;
 
     /// <summary>
     /// Gets or sets the amount of total 'healing' a zombie will require before being cured.
     /// </summary>
     [Description("The amount of total 'healing' a zombie will require before being cured.")]
-    public int ZombieHealingRequired { get; set; } = 125;
+    public int ZombieHealingRequired { get; set; } = 100;
 
     /// <inheritdoc/>
     protected override void SubscribeEvents()
@@ -137,15 +140,14 @@ public class MediGun : CustomWeapon
 
                 ev.IsAllowed = false;
             }
-            else if (ev.Player.Role == RoleTypeId.Scp0492 && HealZombies)
+            else if (ev.Player.Role == RoleTypeId.Scp0492)
             {
                 if (!ev.Player.ActiveArtificialHealthProcesses.Any())
-                    ev.Player.AddAhp(0, ZombieHealingRequired, persistant: true);
+                    ev.Player.AddAhp(0, ZombieHealingRequired, persistant: true, decay: 0);
                 ev.Player.ArtificialHealth += ev.Amount;
 
                 if (ev.Player.ArtificialHealth >= ev.Player.MaxArtificialHealth)
-                    DoReviveZombie(ev.Player, ev.Attacker);
-
+                    DoReviveZombie(ev.Player);
                 ev.IsAllowed = false;
             }
         }
@@ -162,15 +164,19 @@ public class MediGun : CustomWeapon
         previousRoles[ev.Player] = ev.Player.Role;
     }
 
-    private void DoReviveZombie(Player target, Player healer)
+    private void DoReviveZombie(Player target)
     {
         Log.Debug($"Reviving {target.Nickname}");
         {
             Log.Debug($"Reviving {target.Nickname}");
             if (HealZombiesTeamCheck)
             {
-                target.Role.Set(previousRoles[target], RoleSpawnFlags.None);
+                target.Role.Set(previousRoles[target], SpawnReason.Respawn, RoleSpawnFlags.None);
+                return;
             }
+
+            if (previousRoles.ContainsKey(target))
+                target.Role.Set(previousRoles[target], SpawnReason.Respawn, RoleSpawnFlags.None);
         }
     }
 }
