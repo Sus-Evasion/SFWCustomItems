@@ -178,10 +178,10 @@ public class Items
         new Tgun(),
     };
 
-    [Description("Warhead Controller")]
-    public List<WarheadController> WarheadControllers { get; private set; } = new()
+    [Description("Warhead Detonator")]
+    public List<WarheadDetonator> WarheadDetonators { get; private set; } = new()
     {
-        new WarheadController(),
+        new WarheadDetonator(),
     };
 
     [Description("SCP500-B")]
