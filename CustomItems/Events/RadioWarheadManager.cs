@@ -1,4 +1,5 @@
-﻿using Waits;
+using Exiled.Events.EventArgs.Scp0492;
+using Waits;
 
 namespace CustomItems.Events
 {
@@ -15,44 +16,19 @@ namespace CustomItems.Events
     {
 
         [Description("cooldown message displayed when used")]
-        public static string CooldownMessage { get; set; } = "$seconds seconds till <color=red>Warhead Battery</color> charged";
+        public static string WarheadMessage { get; set; } = "$seconds seconds till <color=red>Warhead Detonation Sequence Initiation!</color>!";
 
-        [Description("Hint displayed once the player uses the controller and warhead was detonated.")]
-        public static string DetonatedMessage { get; set; } = "Unable to detect Alpha Warhead Signal!";
-
-        [Description("Hint displayed once the player's disguise is over")]
-        public static string RadioAvaiability { get; set; } = "Warhead Controller Recharged";
-
-        public static bool CanDetonate { get; set; } = true;
-
-        public static void TriggerEvent(Player player, bool warheadtriggered, bool warheaddetonated)
+        public static void TriggerEvent(Player player, bool wd)
         {
-            if (CanDetonate)
+            if (wd)
             {
-                if (warheaddetonated)
-                {
-                    player.Broadcast(5, DetonatedMessage, global::Broadcast.BroadcastFlags.Normal);
-                }
-                else
-                {
-                    if (warheadtriggered)
-                    {
-                        Warhead.Stop();
-                        CanDetonate = false;
-                        Timing.RunCoroutine(CountdownTimer(120, player));
-                    }
-                    else
-                    {
-                        if (Round.ElapsedTime.TotalSeconds > 1320)
-                        {
-                            Warhead.IsLocked = true;
-                        }
+                Warhead.DetonationTimer = 60f;
+                Warhead.Start();
+                Warhead.IsLocked = true;
 
-                        Timing.WaitForSeconds(1);
-                        Warhead.Start();
-                        CanDetonate = false;
-                        Timing.RunCoroutine(CountdownTimer(120, player));
-                    }
+                foreach (Player p in Player.List)
+                {
+                    Timing.RunCoroutine(CountdownTimer(60, p));
                 }
             }
         }
@@ -63,15 +39,14 @@ namespace CustomItems.Events
             while (true)
             {
                 Timing.WaitForSeconds(0.1f);
-                player.ShowHint(CooldownMessage.Replace("$seconds", timeLeft.ToString()));
+                player.Broadcast(5, WarheadMessage.Replace("$seconds", timeLeft.ToString()), global::Broadcast.BroadcastFlags.Normal, true);
                 yield return Timing.WaitForSeconds(1f);
 
                 timeLeft -= 1;
 
                 if (timeLeft != 0)
                     continue;
-                CanDetonate = true;
-                player.ShowHint(RadioAvaiability, 5f);
+                player.Broadcast(5, "Alpha Warhead Denotation", global::Broadcast.BroadcastFlags.Normal, true);
                 yield break;
             }
         }
