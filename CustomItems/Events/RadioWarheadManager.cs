@@ -16,7 +16,7 @@ namespace CustomItems.Events
     {
 
         [Description("cooldown message displayed when used")]
-        public static string WarheadMessage { get; set; } = "$seconds seconds till <color=red>Warhead Detonation Sequence Initiation!</color>!";
+        public static string WarheadMessage { get; set; } = "$seconds seconds till <color=red>Warhead Detonation!</color>!";
 
         public static void TriggerEvent(Player player, bool wd)
         {
