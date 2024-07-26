@@ -73,7 +73,7 @@ public class GrenadeLauncher : CustomWeapon
     public override float Damage { get; set; }
 
     /// <inheritdoc/>
-    public override byte ClipSize { get; set; } = 100;
+    public override byte ClipSize { get; set; } = 1;
 
     /// <summary>
     /// Gets or sets a value indicating whether or not players will need actual frag grenades in their inventory to use as ammo. If false, the weapon's base ammo type is used instead.
