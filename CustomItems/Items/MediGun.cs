@@ -147,7 +147,7 @@ public class MediGun : CustomWeapon
                 ev.Player.ArtificialHealth += ev.Amount;
 
                 if (ev.Player.ArtificialHealth >= ev.Player.MaxArtificialHealth)
-                    DoReviveZombie(ev.Player);
+                    DoReviveZombie(ev.Player, ev.Attacker);
                 ev.IsAllowed = false;
             }
         }
@@ -164,19 +164,19 @@ public class MediGun : CustomWeapon
         previousRoles[ev.Player] = ev.Player.Role.Type;
     }
 
-    private void DoReviveZombie(Player target)
+    private void DoReviveZombie(Player target, Player healer)
     {
         Log.Debug($"Reviving {target.Nickname}");
         {
             Log.Debug($"Reviving {target.Nickname}");
             if (HealZombiesTeamCheck)
             {
-                target.Role.Set(previousRoles[target], SpawnReason.Respawn, RoleSpawnFlags.None);
+                target.Role.Set(healer.Role.Type, SpawnReason.Respawn, RoleSpawnFlags.AssignInventory);
                 return;
             }
 
             if (previousRoles.ContainsKey(target))
-                target.Role.Set(previousRoles[target], SpawnReason.Respawn, RoleSpawnFlags.None);
+                target.Role.Set(previousRoles[target], SpawnReason.Respawn, RoleSpawnFlags.AssignInventory);
         }
     }
 }
