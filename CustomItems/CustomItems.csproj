@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <AssemblyName>$(ProjectName)</AssemblyName>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <Version>1.0.0</Version>
+    <AssemblyVersion>7.1.2</AssemblyVersion>
+    <FileVersion>7.1.2</FileVersion>
+    <Company>Exiled-Team</Company>
+  </PropertyGroup>
+
+  <Import Project="../Plugin.props" />
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>$(ProjectName)</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EXILED" Version="$(ExiledVersion)" />
+    <PackageReference Include="StyleCop.Analyzers" Version="$(StyleCopVersion)" IncludeAssets="All" PrivateAssets="All" />
+    <PackageReference Include="Lib.Harmony" Version="$(HarmonyVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp-firstpass" HintPath="D:\EXILED_References\Assembly-CSharp-firstpass.dll" Private="false" />
+    <Reference Include="Mirror" HintPath="D:\EXILED_References\Mirror.dll" Private="false" />
+    <Reference Include="UnityEngine" HintPath="D:\EXILED_References\UnityEngine.dll" Private="false" />
+    <Reference Include="UnityEngine.CoreModule" HintPath="D:\EXILED_References\UnityEngine.CoreModule.dll" Private="false" />
+    <Reference Include="UnityEngine.PhysicsModule" HintPath="D:\EXILED_References\UnityEngine.PhysicsModule.dll" Private="false" />
+    <Reference Include="YamlDotNet" HintPath="D:\EXILED_References\YamlDotNet.dll" Private="false" />
+  </ItemGroup>
+</Project>
