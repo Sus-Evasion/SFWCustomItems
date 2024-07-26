@@ -1,5 +1,5 @@
 # CustomItems
-======
+[----] [----] [----]
 ## Description
 This plugin has 2 parts, all contained in a single DLL with no needed dependencies.
 Firstly, This plugin adds a number of custom items (detailed below) for server hosts to use on their servers. Currently, these items can either be given to Subclasses (using: [Advanced Subclassing](https://github.com/steven4547466/AdvancedSubclassing)), spawned around the map at pre-defined locations (valid locations listed below), or via commands.
