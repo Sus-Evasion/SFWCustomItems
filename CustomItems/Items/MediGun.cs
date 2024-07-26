@@ -44,7 +44,7 @@ public class MediGun : CustomWeapon
     public override float Damage { get; set; }
 
     /// <inheritdoc/>
-    public override byte ClipSize { get; set; } = 10;
+    public override byte ClipSize { get; set; } = 30;
 
     /// <summary>
     /// Gets or sets a value indicating whether or not to allow friendly fire with this weapon on FF-enabled servers.
