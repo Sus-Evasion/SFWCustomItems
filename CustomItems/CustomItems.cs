@@ -5,6 +5,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Collections.Generic;
+using MEC;
+
 #pragma warning disable SA1200
 namespace CustomItems;
 
@@ -14,6 +17,7 @@ using Exiled.API.Features;
 using Exiled.CustomItems.API.Features;
 using HarmonyLib;
 using Server = Exiled.Events.Handlers.Server;
+using Exiled.Events.Handlers;
 
 /// <inheritdoc />
 public class CustomItems : Plugin<Config>

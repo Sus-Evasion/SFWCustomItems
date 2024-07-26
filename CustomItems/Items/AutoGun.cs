@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+﻿﻿// -----------------------------------------------------------------------
 // <copyright file="AutoGun.cs" company="Joker119">
 // Copyright (c) Joker119. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.

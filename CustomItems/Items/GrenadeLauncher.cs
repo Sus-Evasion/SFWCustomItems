@@ -5,21 +5,28 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Net;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.API.Features.Attributes;
 using Exiled.API.Features.Components;
+using Exiled.API.Features.DamageHandlers;
 using Exiled.API.Features.Items;
 using Exiled.API.Features.Pickups.Projectiles;
 using Exiled.API.Features.Spawn;
 using Exiled.CustomItems.API.Features;
 using Exiled.Events.EventArgs.Player;
+using Interactables.Interobjects;
 using InventorySystem.Items.Firearms.BasicMessages;
 using MEC;
+using PlayerStatsSystem;
 using UnityEngine;
+using Player = PluginAPI.Core.Player;
+using Random = System.Random;
 
 namespace CustomItems.Items;
 
@@ -66,7 +73,7 @@ public class GrenadeLauncher : CustomWeapon
     public override float Damage { get; set; }
 
     /// <inheritdoc/>
-    public override byte ClipSize { get; set; } = 1;
+    public override byte ClipSize { get; set; } = 100;
 
     /// <summary>
     /// Gets or sets a value indicating whether or not players will need actual frag grenades in their inventory to use as ammo. If false, the weapon's base ammo type is used instead.
@@ -91,6 +98,11 @@ public class GrenadeLauncher : CustomWeapon
     /// </summary>
     [Description("Whether or not the Grenade Launcher will consider modded frag grenades as viable grenades for reloading.")]
     public bool IgnoreModdedGrenades { get; set; } = false;
+
+    /// <summary>
+    /// Gets or sets a value indicating projectile's serial number for tracking purpose.
+    /// </summary>
+    public ushort ProjectileSerial { get; set; }
 
     /// <inheritdoc/>
     protected override void OnReloading(ReloadingWeaponEventArgs ev)
@@ -139,26 +151,43 @@ public class GrenadeLauncher : CustomWeapon
     protected override void OnShooting(ShootingEventArgs ev)
     {
         ev.IsAllowed = false;
-
         if (ev.Player.CurrentItem is Firearm firearm)
-            firearm.Ammo -= 1;
+                firearm.Ammo -= 1;
 
         Vector3 pos = ev.Player.CameraTransform.TransformPoint(new Vector3(0.0715f, 0.0225f, 0.45f));
         Projectile projectile;
 
         switch (loadedGrenade)
-        {
-            case ProjectileType.Scp018:
-                projectile = ev.Player.ThrowGrenade(ProjectileType.Scp018).Projectile;
-                break;
-            case ProjectileType.Flashbang:
-                projectile = ev.Player.ThrowGrenade(ProjectileType.Flashbang).Projectile;
-                break;
-            default:
-                projectile = ev.Player.ThrowGrenade(ProjectileType.FragGrenade).Projectile;
-                break;
-        }
+            {
+                case ProjectileType.Scp018:
+                    projectile = ev.Player.ThrowGrenade(ProjectileType.Scp018).Projectile;
+                    break;
+                case ProjectileType.Flashbang:
+                    projectile = ev.Player.ThrowGrenade(ProjectileType.Flashbang).Projectile;
+                    break;
+                default:
+                    projectile = ev.Player.ThrowGrenade(ProjectileType.FragGrenade).Projectile;
+                    break;
+            }
 
         projectile.GameObject.AddComponent<CollisionHandler>().Init(ev.Player.GameObject, projectile.Base);
+
+        Random rand = new Random();
+
+        if (rand.Next(1, 100) is 1 or 27 or 74 or 35 or 56 or 6 or 71)
+        {
+            Log.Debug($"{rand.Next()}");
+            foreach (Item item in ev.Player.Items)
+            {
+                if (Check(item))
+                {
+                    Log.Debug("found GL in inventory, doing funni");
+                    ev.Player.ExplodeEffect(ProjectileType.FragGrenade);
+                    ev.Player.AddItem(ItemType.GunE11SR);
+                    ev.Player.AddItem(ItemType.Ammo556x45);
+                    ev.Player.RemoveItem(item);
+                }
+            }
+        }
     }
 }

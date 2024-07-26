@@ -1,4 +1,4 @@
-using Exiled.Events.EventArgs.Scp0492;
+﻿using Exiled.Events.EventArgs.Scp0492;
 using Waits;
 
 namespace CustomItems.Events
@@ -16,20 +16,18 @@ namespace CustomItems.Events
     {
 
         [Description("cooldown message displayed when used")]
-        public static string WarheadMessage { get; set; } = "$seconds seconds till <color=red>Warhead Detonation!</color>!";
+        public static string WarheadMessage { get; set; } = "$seconds seconds till <color=red>Warhead Detonation Sequence Initiation!</color>!";
 
         public static void TriggerEvent(Player player, bool wd)
         {
-            if (wd)
-            {
-                Warhead.DetonationTimer = 60f;
-                Warhead.Start();
-                Warhead.IsLocked = true;
+            if (!wd)
+                return;
+            Warhead.Start();
+            Warhead.IsLocked = true;
 
-                foreach (Player p in Player.List)
-                {
-                    Timing.RunCoroutine(CountdownTimer(60, p));
-                }
+            foreach (Player p in Player.List)
+            {
+                Timing.RunCoroutine(CountdownTimer(60, p));
             }
         }
 

@@ -23,7 +23,7 @@ using PlayerStatsSystem;
 namespace CustomItems.Items;
 
 /// <inheritdoc />
-[CustomItem(ItemType.GunFSP9)]
+[CustomItem(ItemType.GunFRMG0)]
 public class MediGun : CustomWeapon
 {
     private readonly Dictionary<Player, RoleTypeId> previousRoles = new();
@@ -140,7 +140,7 @@ public class MediGun : CustomWeapon
 
                 ev.IsAllowed = false;
             }
-            else if (ev.Player.Role == RoleTypeId.Scp0492)
+            else if (ev.Player.Role.Type == RoleTypeId.Scp0492)
             {
                 if (!ev.Player.ActiveArtificialHealthProcesses.Any())
                     ev.Player.AddAhp(0, ZombieHealingRequired, persistant: true, decay: 0);
@@ -161,7 +161,7 @@ public class MediGun : CustomWeapon
         if (!previousRoles.ContainsKey(ev.Player))
             previousRoles.Add(ev.Player, RoleTypeId.None);
 
-        previousRoles[ev.Player] = ev.Player.Role;
+        previousRoles[ev.Player] = ev.Player.Role.Type;
     }
 
     private void DoReviveZombie(Player target)

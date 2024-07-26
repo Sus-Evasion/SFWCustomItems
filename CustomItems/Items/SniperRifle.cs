@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Net;
 using Exiled.API.Enums;
 using Exiled.API.Features.Attributes;
 using Exiled.API.Features.Spawn;
@@ -15,6 +16,7 @@ using Exiled.CustomItems.API.Features;
 using Exiled.Events.EventArgs.Player;
 using InventorySystem.Items.Firearms.Attachments;
 using InventorySystem.Items.Firearms.BasicMessages;
+using PlayerRoles;
 using PlayerStatsSystem;
 using YamlDotNet.Serialization;
 
@@ -93,6 +95,10 @@ public class SniperRifle : CustomWeapon
             {
                 float damageTotal = Damage * DamageMultiplierScp;
                 ev.Amount = damageTotal;
+            }
+            else if (!ev.Player.IsScp && ev.Player.Role.Type == RoleTypeId.Tutorial)
+            {
+                ev.Amount = -1f;
             }
             else
             {

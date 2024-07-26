@@ -35,7 +35,6 @@ namespace CustomItems.Items;
 [CustomItem(ItemType.GrenadeFlash)]
 public class EmpGrenade : CustomGrenade
 {
-    private static readonly List<Room> LockedRooms079 = new();
 
     private readonly List<Door> lockedDoors = new();
 
@@ -53,13 +52,18 @@ public class EmpGrenade : CustomGrenade
     /// <inheritdoc/>
     public override SpawnProperties? SpawnProperties { get; set; } = new()
     {
-        Limit = 1,
+        Limit = 2,
         DynamicSpawnPoints = new List<DynamicSpawnPoint>
         {
             new()
             {
                 Chance = 100,
-                Location = SpawnLocationType.Inside079Secondary,
+                Location = SpawnLocationType.Inside173Gate,
+            },
+            new()
+            {
+                Chance = 100,
+                Location = SpawnLocationType.Inside914,
             },
         },
     };
@@ -106,12 +110,11 @@ public class EmpGrenade : CustomGrenade
     /// Gets or sets how long the EMP effect should last on the rooms affected.
     /// </summary>
     [Description("How long the EMP effect should last on the rooms affected.")]
-    public float Duration { get; set; } = 20f;
+    public float Duration { get; set; } = 10f;
 
     /// <inheritdoc/>
     protected override void SubscribeEvents()
     {
-        Scp079.ChangingCamera += OnChangingCamera;
         Scp079.TriggeringDoor += OnInteractingDoor;
 
         if (DisableTeslaGates)
@@ -123,7 +126,6 @@ public class EmpGrenade : CustomGrenade
     /// <inheritdoc/>
     protected override void UnsubscribeEvents()
     {
-        Scp079.ChangingCamera -= OnChangingCamera;
         Scp079.TriggeringDoor -= OnInteractingDoor;
 
         if (DisableTeslaGates)
@@ -140,8 +142,6 @@ public class EmpGrenade : CustomGrenade
         Exiled.API.Features.TeslaGate? gate = null;
 
         Log.Debug($"{ev.Projectile.GameObject.transform.position} - {room.Position} - {Room.List.Count()}");
-
-        LockedRooms079.Add(room);
 
         room.TurnOffLights(Duration);
 
@@ -183,52 +183,18 @@ public class EmpGrenade : CustomGrenade
             });
         }
 
-        foreach (Exiled.API.Features.Player player in Exiled.API.Features.Player.List)
+        foreach (Exiled.API.Features.Player p in Exiled.API.Features.Player.List)
         {
-            if (player.Role.Is(out Scp079Role scp079))
+            if (p.Role.Is(out Scp079Role scp079))
             {
                 if (scp079.Camera != null && scp079.Camera.Room == room)
-                    scp079.Camera = Camera.Get(CameraType.Hcz079ContChamber);
-            }
-
-            if (player.CurrentRoom != room)
-                continue;
-
-            foreach (Item item in player.Items)
-            {
-                switch (item)
-                {
-                    case Radio radio:
-                        radio.IsEnabled = false;
-                        break;
-                    case Flashlight flashlight:
-                        flashlight.Active = false;
-                        break;
-                    case Firearm firearm:
-                        {
-                            foreach (Attachment attachment in firearm.Attachments)
-                            {
-                                if (attachment.Name == AttachmentName.Flashlight)
-                                    attachment.IsEnabled = false;
-                            }
-
-                            break;
-                        }
-                }
+                    scp079.LoseSignal(20);
+                p.ShowHint($"<color=red>you have been jammed by <b>{ev.Player}ith Emp Grenade for 8 Seconds!</color>", 5);
             }
         }
 
         Timing.CallDelayed(Duration, () =>
         {
-            try
-            {
-                LockedRooms079.Remove(room);
-            }
-            catch (Exception e)
-            {
-                Log.Debug($"REMOVING LOCKED ROOM: {e}");
-            }
-
             if (gate != null)
             {
                 try
@@ -241,14 +207,6 @@ public class EmpGrenade : CustomGrenade
                 }
             }
         });
-    }
-
-    private static void OnChangingCamera(ChangingCameraEventArgs ev)
-    {
-        Room room = ev.Camera.Room;
-
-        if (room != null && LockedRooms079.Contains(room))
-            ev.IsAllowed = false;
     }
 
     private void OnInteractingDoor(TriggeringDoorEventArgs ev)

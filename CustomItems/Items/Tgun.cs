@@ -7,9 +7,11 @@
 
 #nullable enable
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Net;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.API.Features.Attributes;
@@ -37,7 +39,7 @@ public class Tgun : CustomWeapon
 
     /// <inheritdoc/>
     public override string Description { get; set; } =
-        "When this weapon is fired, it teleports yourself with penalty of 75 hp";
+        "When this weapon is fired, it teleports yourself randomly across the facility. Do beware that it is fragile and will be destroyed after single use.";
 
     /// <inheritdoc/>
     public override float Weight { get; set; } = 3.95f;
@@ -74,8 +76,16 @@ public class Tgun : CustomWeapon
             List<Door> doors = Door.List.Where(door => door.Rooms.Count > 1).ToList();
             Door door = doors[new Random().Next(doors.Count)];
 
-            return door.Position + Vector3.up + door.Transform.forward;
+            if (Map.IsLczDecontaminated)
+            {
+                do
+                {
+                    door = doors[new Random().Next(doors.Count)];
+                }
+                while (door.Zone is ZoneType.LightContainment);
+            }
 
+            return door.Position + Vector3.up + door.Transform.forward;
         }
 
         if (Zone == ZoneType.Unspecified)
@@ -83,14 +93,30 @@ public class Tgun : CustomWeapon
             List<Door> doors = Door.List.Where(door => door.Room.Type == Room).ToList();
             Door door = doors[new Random().Next(doors.Count)];
 
-            return door.Position + Vector3.up + door.Transform.forward;
+            if (Map.IsLczDecontaminated)
+            {
+                do
+                {
+                    door = doors[new Random().Next(doors.Count)];
+                }
+                while (door.Zone is ZoneType.LightContainment);
+            }
 
+            return door.Position + Vector3.up + door.Transform.forward;
         }
 
         if (Zone != ZoneType.Unspecified)
         {
             List<Door> doors = Door.List.Where(door => door.Zone == Zone).ToList();
             Door door = doors[new Random().Next(doors.Count)];
+            if (Map.IsLczDecontaminated)
+            {
+                do
+                {
+                    door = doors[new Random().Next(doors.Count)];
+                }
+                while (door.Zone is ZoneType.LightContainment);
+            }
 
             return door.Position + Vector3.up + door.Transform.forward;
         }
@@ -100,7 +126,15 @@ public class Tgun : CustomWeapon
 
     public void TryTeleport(Player player)
     {
-        player.Teleport(GetTeleportLocation());
+        try
+        {
+            player.Teleport(GetTeleportLocation());
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     /// <inheritdoc/>
@@ -110,11 +144,13 @@ public class Tgun : CustomWeapon
         {
             ev.Player.Health -= 50;
             TryTeleport(ev.Player);
+            if (DespawnAfterUse)
+                ev.Player.RemoveItem(ev.Item);
         }
         else
         {
             ev.Player.ShowHint("You do not have enough health required for teleportation");
-            ev.Firearm.Ammo = 1;
+            ev.Firearm.Ammo += 1;
         }
     }
 
@@ -137,6 +173,7 @@ public class Tgun : CustomWeapon
         else
         {
             ev.IsAllowed = false;
+            ev.Player.ShowHint("You do not have enough ammo to reload teleportation gun [Required: 50 9MM]");
         }
     }
 }

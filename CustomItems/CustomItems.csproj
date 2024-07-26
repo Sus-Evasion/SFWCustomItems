@@ -26,11 +26,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Assembly-CSharp-firstpass" HintPath="D:\Reference\Dev\Assembly-CSharp-firstpass.dll" Private="false" />
-    <Reference Include="Mirror" HintPath="D:\Reference\Dev\Mirror.dll" Private="false" />
-    <Reference Include="UnityEngine" HintPath="D:\Reference\Dev\UnityEngine.dll" Private="false" />
-    <Reference Include="UnityEngine.CoreModule" HintPath="D:\Reference\Dev\UnityEngine.CoreModule.dll" Private="false" />
-    <Reference Include="UnityEngine.PhysicsModule" HintPath="D:\Reference\Dev\UnityEngine.PhysicsModule.dll" Private="false" />
-    <Reference Include="YamlDotNet" HintPath="D:\Reference\Dev\YamlDotNet.dll" Private="false" />
+    <Reference Include="Assembly-CSharp-firstpass" HintPath="D:\EXILED_References\Assembly-CSharp-firstpass.dll" Private="false" />
+    <Reference Include="Mirror" HintPath="D:\EXILED_References\Mirror.dll" Private="false" />
+    <Reference Include="UnityEngine" HintPath="D:\EXILED_References\UnityEngine.dll" Private="false" />
+    <Reference Include="UnityEngine.CoreModule" HintPath="D:\EXILED_References\UnityEngine.CoreModule.dll" Private="false" />
+    <Reference Include="UnityEngine.PhysicsModule" HintPath="D:\EXILED_References\UnityEngine.PhysicsModule.dll" Private="false" />
+    <Reference Include="YamlDotNet" HintPath="D:\EXILED_References\YamlDotNet.dll" Private="false" />
   </ItemGroup>
 </Project>

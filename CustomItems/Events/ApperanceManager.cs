@@ -11,8 +11,8 @@
 
     public class AppearanceManager
     {
-        [Description("Whether or not the player should change appearance")]
-        public bool ChangePlayerAppearance { get; set; } = false;
+        [Description("If hat is being used")]
+        public bool ChangedPlayerAppearance { get; set; } = false;
 
         [Description("List of roles the player can turn to. As you can imagine scp-079 is not an option.")]
         public List<RoleTypeId> PossibleRoles { get; set; } = new ()
@@ -37,6 +37,7 @@
         {
             RoleTypeId DisguiseRole = PossibleRoles.Where(role => role != RoleTypeId.Scp079).ToList()[new Random().Next(PossibleRoles.Count)];
             player.ChangeAppearance(DisguiseRole);
+            ChangedPlayerAppearance = true;
             Log.Debug($"Generated Disguise was: {DisguiseRole.GetFullName()}");
 
             RoleTypeId OldRole = player.Role.Type;

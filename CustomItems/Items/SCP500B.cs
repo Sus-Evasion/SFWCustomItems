@@ -41,10 +41,10 @@ public class Scp500B : CustomItem
         Limit = 1,
         DynamicSpawnPoints = new List<DynamicSpawnPoint>
         {
-            new () { Chance = 5, Location = SpawnLocationType.Inside173Gate },
-            new () { Chance = 2, Location = SpawnLocationType.Inside096 },
+            new () { Chance = 50, Location = SpawnLocationType.Inside173Gate },
+            new () { Chance = 20, Location = SpawnLocationType.Inside096 },
             new () { Chance = 10, Location = SpawnLocationType.InsideLocker },
-            new () { Chance = 5, Location = SpawnLocationType.InsideHczArmory},
+            new () { Chance = 30, Location = SpawnLocationType.InsideHczArmory },
         },
     };
 
@@ -97,12 +97,12 @@ public class Scp500B : CustomItem
     // Helper function to check if a role is one of the Chaos roles
     private bool IsChaosRole(RoleTypeId roleType)
     {
-    return roleType == RoleTypeId.ChaosConscript || roleType == RoleTypeId.ChaosRifleman || roleType == RoleTypeId.ChaosMarauder || roleType == RoleTypeId.ChaosRepressor;
+    return roleType is RoleTypeId.ChaosConscript or RoleTypeId.ChaosRifleman or RoleTypeId.ChaosMarauder or RoleTypeId.ChaosRepressor;
     }
 
     private bool IsNtfRole(RoleTypeId roleType)
     {
-    return roleType == RoleTypeId.NtfPrivate || roleType == RoleTypeId.NtfCaptain || roleType == RoleTypeId.NtfSergeant || roleType == RoleTypeId.NtfSpecialist;
+    return roleType is RoleTypeId.NtfPrivate or RoleTypeId.NtfCaptain or RoleTypeId.NtfSergeant or RoleTypeId.NtfSpecialist;
     }
 
     // Helper function to switch the player's role and broadcast a message
@@ -110,7 +110,7 @@ public class Scp500B : CustomItem
     {
         player.ClearInventory();
         player.Role.Set(newRole, SpawnReason.ForceClass, RoleSpawnFlags.AssignInventory);
-        string message = $"You have switched sides to <color={factionColor}>{faction}</color> Faction and became a <color={roleColor}>{roleName}</color>";
-        player.Broadcast(5, message);
+        string message = $"{player.Nickname} has committed treason & switched sides to <color={factionColor}>{faction}</color> Faction & became a <color={roleColor}>{roleName}</color>";
+        Exiled.API.Features.Map.Broadcast(5, message);
     }
 }

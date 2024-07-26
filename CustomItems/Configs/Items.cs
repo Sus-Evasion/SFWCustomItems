@@ -179,9 +179,9 @@ public class Items
     };
 
     [Description("Warhead Detonator")]
-    public List<WarheadDetonator> WarheadDetonators { get; private set; } = new()
+    public List<SCRAMBLE> SCRAMBLEs { get; private set; } = new()
     {
-        new WarheadDetonator(),
+        new SCRAMBLE(),
     };
 
     [Description("SCP500-B")]
@@ -189,4 +189,11 @@ public class Items
     {
         new Scp500B(),
     };
+
+    /*[Description("SCP500-E")]
+    public List<SCP500E> SCP500E { get; private set; } = new()
+    {
+        new SCP500E(),
+    };
+    */
 }

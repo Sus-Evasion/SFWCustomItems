@@ -5,6 +5,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Exiled.API.Enums;
+using PlayerRoles;
+
 #pragma warning disable SA1200
 
 namespace CustomItems;
@@ -61,6 +64,8 @@ public class Config : IConfig
     /// Gets or sets a value indicating what file will be used for item configs.
     /// </summary>
     public string ItemConfigFile { get; set; } = "global.yml";
+    
+    public string NewConfigFile { get; set; } = "Version1.yml";
 
     /// <summary>
     /// Loads the item configs.

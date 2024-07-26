@@ -54,7 +54,7 @@ public class C4Charge : ICommand
 
             if (distance < Items.C4Charge.Instance.MaxDistance)
             {
-                Items.C4Charge.Instance.C4Handler(charge.Key);
+                Items.C4Charge.Instance.C4Handler(charge.Key, ply);
 
                 i++;
             }
@@ -64,7 +64,7 @@ public class C4Charge : ICommand
             }
         }
 
-        response = i == 1 ? $"\n<color=green>{i} C4 charge has been detonated!</color>" : $"\n<color=green>{i} C4 charges have been deonated!</color>";
+        response = i == 1 ? $"\n<color=green>{i} C4 charge has been detonated!</color>" : $"\n<color=green>{i} C4 charges have been detonated!</color>";
 
         return true;
     }

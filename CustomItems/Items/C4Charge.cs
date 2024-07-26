@@ -179,7 +179,7 @@ public class C4Charge : CustomGrenade
     /// </summary>
     /// <param name="charge"> The C4 charge to be handled.</param>
     /// <param name="removeMethod"> The method of removing the charge.</param>
-    public void C4Handler(Pickup? charge, C4RemoveMethod removeMethod = C4RemoveMethod.Detonate)
+    public void C4Handler(Pickup? charge, Exiled.API.Features.Player player, C4RemoveMethod removeMethod = C4RemoveMethod.Detonate)
     {
         if (charge?.Position is null)
             return;
@@ -194,7 +194,7 @@ public class C4Charge : CustomGrenade
                 {
                     ExplosiveGrenade grenade = (ExplosiveGrenade)Item.Create(Type);
                     grenade.FuseTime = 0.1f;
-                    grenade.SpawnActive(charge.Position);
+                    grenade.SpawnActive(charge.Position, player);
                     break;
                 }
 
@@ -259,7 +259,7 @@ public class C4Charge : CustomGrenade
         {
             if (charge.Value == ev.Player)
             {
-                C4Handler(charge.Key, C4RemoveMethod.Remove);
+                C4Handler(charge.Key, ev.Player, C4RemoveMethod.Remove);
             }
         }
     }
@@ -270,7 +270,7 @@ public class C4Charge : CustomGrenade
         {
             if (charge.Value == ev.Player)
             {
-                C4Handler(charge.Key, MethodOnDeath);
+                C4Handler(charge.Key, ev.Player, MethodOnDeath);
             }
         }
     }
@@ -291,7 +291,7 @@ public class C4Charge : CustomGrenade
 
             if (PlacedCharges.ContainsKey(Pickup.Get(grenade)))
             {
-                C4Handler(Pickup.Get(grenade), ShotMethod);
+                C4Handler(Pickup.Get(grenade), ev.Player,  ShotMethod);
             }
         }
     }

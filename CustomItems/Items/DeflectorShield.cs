@@ -1,9 +1,11 @@
-﻿// -----------------------------------------------------------------------
+﻿﻿// -----------------------------------------------------------------------
 // <copyright file="DeflectorShield.cs" company="Joker119">
 // Copyright (c) Joker119. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
+
+namespace CustomItems.Items;
 
 using System;
 using System.Collections.Generic;
@@ -15,12 +17,12 @@ using Exiled.API.Features.Spawn;
 using Exiled.CustomItems.API.EventArgs;
 using Exiled.CustomItems.API.Features;
 using Exiled.Events.EventArgs.Player;
+
 using MEC;
 using PlayerStatsSystem;
 using YamlDotNet.Serialization;
-using DamageHandlerBase = Exiled.API.Features.DamageHandlers.DamageHandlerBase;
 
-namespace CustomItems.Items;
+using DamageHandlerBase = Exiled.API.Features.DamageHandlers.DamageHandlerBase;
 
 /// <inheritdoc />
 [CustomItem(ItemType.SCP268)]
@@ -31,7 +33,7 @@ public class DeflectorShield : CustomItem
     private readonly ItemType type = ItemType.SCP268;
 
     /// <inheritdoc/>
-    public override uint Id { get; set; } = 15;
+    public override uint Id { get; set; } = 18;
 
     /// <inheritdoc/>
     [YamlIgnore]
@@ -64,13 +66,13 @@ public class DeflectorShield : CustomItem
     /// Gets or sets how long the deflector shield can be wore, before automaticly player takes it off. (set to 0 for no limit).
     /// </summary>
     [Description("How long the deflector shield can be wore, before automaticly player takes it off. (set to 0 for no limit)")]
-    public float Duration { get; set; } = 5f;
+    public float Duration { get; set; } = 15f;
 
     /// <summary>
     /// Gets or sets By what will the Damage be multiplied.
     /// </summary>
     [Description("By what will the Damage be multiplied")]
-    public float Multiplier { get; set; } = 0.5f;
+    public float Multiplier { get; set; } = 1f;
 
     /// <inheritdoc/>
     protected override void SubscribeEvents()
@@ -149,7 +151,6 @@ public class DeflectorShield : CustomItem
         {
             ev.IsAllowed = false;
             ev.Attacker.Hurt(ev.Player, ev.Amount * Multiplier, ev.DamageHandler.Type, DamageHandlerBase.CassieAnnouncement.Default);
-            ev.Player.Hurt(ev.Amount / 3f);
         }
     }
 }

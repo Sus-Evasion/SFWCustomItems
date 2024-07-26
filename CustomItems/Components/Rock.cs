@@ -5,6 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+/*
 namespace CustomItems.Components;
 
 using System;
@@ -83,3 +84,4 @@ public class Rock : Scp018Projectile
         }
     }
 }
+*/

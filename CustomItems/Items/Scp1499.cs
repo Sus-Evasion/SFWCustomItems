@@ -47,8 +47,18 @@ public class Scp1499 : CustomItem
         {
             new()
             {
-                Chance = 10,
+                Chance = 50,
                 Location = SpawnLocationType.InsideHid,
+            },
+            new()
+            {
+                Chance = 25,
+                Location = SpawnLocationType.InsideLczCafe,
+            },
+            new()
+            {
+                Chance = 25,
+                Location = SpawnLocationType.InsideServersBottom,
             },
         },
     };

@@ -41,18 +41,7 @@ public class HatofDisguise : CustomItem
     public AppearanceManager AppearanceOptions { get; set; } = new ();
 
     /// <inheritdoc/>
-    public override SpawnProperties? SpawnProperties { get; set; } = new ()
-    {
-        Limit = 1,
-        DynamicSpawnPoints = new List<DynamicSpawnPoint>
-        {
-            new ()
-            {
-                Chance = 100,
-                Location = SpawnLocationType.InsideGr18,
-            },
-        },
-    };
+    public override SpawnProperties? SpawnProperties { get; set; } = new();
 
     /// <summary>
     /// Gets or sets how long the SCP-1499 can be wore, before automaticly player takes it off. (set to 0 for no limit).
@@ -83,19 +72,20 @@ public class HatofDisguise : CustomItem
     /// <inheritdoc/>
     protected override void OnDropping(DroppingItemEventArgs ev)
     {
-        ev.Player.ChangeAppearance(ev.Player.Role.Type);
+        if (AppearanceOptions.ChangedPlayerAppearance)
+            ev.Player.ChangeAppearance(ev.Player.Role.Type);
     }
 
     private void OnDying(DyingEventArgs ev)
     {
-        if (hatofDisguise.ContainsKey(ev.Player))
-            hatofDisguise.Remove(ev.Player);
+        if (AppearanceOptions.ChangedPlayerAppearance)
+            ev.Player.ChangeAppearance(ev.Player.Role.Type);
     }
 
     private void OnDestroying(DestroyingEventArgs ev)
     {
-        if (hatofDisguise.ContainsKey(ev.Player))
-            hatofDisguise.Remove(ev.Player);
+        if (AppearanceOptions.ChangedPlayerAppearance)
+            ev.Player.ChangeAppearance(ev.Player.Role.Type);
     }
 
     private void OnUsedItem(UsedItemEventArgs ev)

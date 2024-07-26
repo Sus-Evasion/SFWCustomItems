@@ -1,9 +1,0 @@
-C:\Users\lmalo\Downloads\CustomItems-main\CustomItems\bin\Debug\CustomItems.dll
-C:\Users\lmalo\Downloads\CustomItems-main\CustomItems\bin\Debug\CustomItems.pdb
-C:\Users\lmalo\Downloads\CustomItems-main\CustomItems\obj\Debug\CustomItems.csproj.AssemblyReference.cache
-C:\Users\lmalo\Downloads\CustomItems-main\CustomItems\obj\Debug\CustomItems.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\lmalo\Downloads\CustomItems-main\CustomItems\obj\Debug\CustomItems.AssemblyInfoInputs.cache
-C:\Users\lmalo\Downloads\CustomItems-main\CustomItems\obj\Debug\CustomItems.AssemblyInfo.cs
-C:\Users\lmalo\Downloads\CustomItems-main\CustomItems\obj\Debug\CustomItems.csproj.CoreCompileInputs.cache
-C:\Users\lmalo\Downloads\CustomItems-main\CustomItems\obj\Debug\CustomItems.dll
-C:\Users\lmalo\Downloads\CustomItems-main\CustomItems\obj\Debug\CustomItems.pdb

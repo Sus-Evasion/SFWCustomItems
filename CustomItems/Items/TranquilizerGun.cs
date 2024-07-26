@@ -11,8 +11,10 @@ using System.ComponentModel;
 using System.Linq;
 using CustomPlayerEffects;
 using Exiled.API.Enums;
+using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.API.Features.Attributes;
+using Exiled.API.Features.Doors;
 using Exiled.API.Features.Pools;
 using Exiled.API.Features.Roles;
 using Exiled.API.Features.Spawn;
@@ -20,6 +22,7 @@ using Exiled.CustomItems.API.Features;
 using Exiled.Events.EventArgs.Interfaces;
 using Exiled.Events.EventArgs.Player;
 using Exiled.Events.Handlers;
+using Interactables.Interobjects;
 using MEC;
 using Mirror;
 using PlayerRoles;
@@ -112,6 +115,8 @@ public class TranquilizerGun : CustomWeapon
     [Description("The percent chance an SCP will resist being tranquilized. This has no effect if ResistantScps is false.")]
     public int ScpResistChance { get; set; } = 40;
 
+    public float Enrage { get; set; }
+
     /// <inheritdoc/>
     protected override void UnsubscribeEvents()
     {
@@ -155,6 +160,9 @@ public class TranquilizerGun : CustomWeapon
         if (ev.Attacker == ev.Player)
             return;
 
+        if (ev.Attacker.Role.Team == ev.Player.Role.Team)
+            return;
+
         if (ev.Player.Role.Team == Team.SCPs)
         {
             int r = Random.Range(1, 101);
@@ -184,9 +192,7 @@ public class TranquilizerGun : CustomWeapon
     private IEnumerator<float> DoTranquilize(Player player, float duration)
     {
         activeTranqs.Add(player);
-        Vector3 oldPosition = player.Position;
         Item previousItem = player.CurrentItem;
-        Vector3 previousScale = player.Scale;
         float newHealth = player.Health - Damage;
         List<StatusEffectBase> activeEffects = ListPool<StatusEffectBase>.Pool.Get();
         player.CurrentItem = null;
@@ -220,23 +226,29 @@ public class TranquilizerGun : CustomWeapon
             Log.Error($"{nameof(DoTranquilize)}: {e}");
         }
 
-        Ragdoll? ragdoll = null;
-        if (player.Role.Type != RoleTypeId.Scp106)
-            ragdoll = Ragdoll.CreateAndSpawn(player.Role, player.DisplayNickname, "Tranquilized", player.Position, player.ReferenceHub.PlayerCameraReference.rotation, player);
-
         if (player.Role is Scp096Role scp)
-            scp.RageManager.ServerEndEnrage();
+        {
+            if (scp.RageManager.EnragedTimeLeft >= 20f)
+            {
+                scp.RageManager.EnragedTimeLeft -= 20f;
+            }
+            else
+            {
+                scp.RageManager.ServerEndEnrage();
+            }
+        }
 
         try
         {
-            player.EnableEffect<Invisible>(duration);
-            player.Scale = Vector3.one * 0.2f;
             player.Health = newHealth;
-            player.IsGodModeEnabled = true;
 
             player.EnableEffect<AmnesiaVision>(duration);
             player.EnableEffect<AmnesiaItems>(duration);
             player.EnableEffect<Ensnared>(duration);
+            if (player.Role.Type is RoleTypeId.Scp173)
+            {
+                player.EnableEffect<Flashed>(duration);
+            }
         }
         catch (Exception e)
         {
@@ -247,16 +259,10 @@ public class TranquilizerGun : CustomWeapon
 
         try
         {
-            if (ragdoll != null)
-                NetworkServer.Destroy(ragdoll.GameObject);
-
             if (player.GameObject == null)
                 yield break;
 
             newHealth = player.Health;
-
-            player.IsGodModeEnabled = false;
-            player.Scale = previousScale;
             player.Health = newHealth;
 
             if (!DropItems)
@@ -276,10 +282,7 @@ public class TranquilizerGun : CustomWeapon
         if (Warhead.IsDetonated && player.Position.y < 900)
         {
             player.Hurt(new UniversalDamageHandler(-1f, DeathTranslations.Warhead));
-            yield break;
         }
-
-        player.Position = oldPosition;
     }
 
     private IEnumerator<float> ReduceResistances()
