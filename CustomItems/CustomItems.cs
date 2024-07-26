@@ -30,7 +30,10 @@ public class CustomItems : Plugin<Config>
     public static CustomItems Instance { get; private set; } = null!;
 
     /// <inheritdoc/>
-    public override Version RequiredExiledVersion { get; } = new(8, 2, 1);
+    public override Version RequiredExiledVersion { get; } = new(8, 11, 0);
+
+    /// <inheritdoc />
+    public override string Author => "(Maintained by Tax Evasion)";
 
     /// <inheritdoc/>
     public override void OnEnabled()
