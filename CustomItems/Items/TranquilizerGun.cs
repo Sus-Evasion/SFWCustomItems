@@ -115,8 +115,6 @@ public class TranquilizerGun : CustomWeapon
     [Description("The percent chance an SCP will resist being tranquilized. This has no effect if ResistantScps is false.")]
     public int ScpResistChance { get; set; } = 40;
 
-    public float Enrage { get; set; }
-
     /// <inheritdoc/>
     protected override void UnsubscribeEvents()
     {
