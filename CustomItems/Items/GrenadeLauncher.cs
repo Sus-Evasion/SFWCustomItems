@@ -26,7 +26,7 @@ using MEC;
 using PlayerStatsSystem;
 using UnityEngine;
 using Player = PluginAPI.Core.Player;
-using Random = System.Random;
+using Loader = Exiled.Loader.Loader;
 
 namespace CustomItems.Items;
 
@@ -98,6 +98,13 @@ public class GrenadeLauncher : CustomWeapon
     /// </summary>
     [Description("Whether or not the Grenade Launcher will consider modded frag grenades as viable grenades for reloading.")]
     public bool IgnoreModdedGrenades { get; set; } = false;
+
+    /// <summary>
+    /// sets a value indicating the chance of Grenade Launcher exploding in the face of player.
+    /// </summary>
+    [Description("The Chance of Grenade Launcher exploding, Range from 0 to 100. (Set 0 for no explosion)")]
+
+    public int Chance { get; set; } = 35;
 
     /// <summary>
     /// Gets or sets a value indicating projectile's serial number for tracking purpose.
@@ -172,21 +179,29 @@ public class GrenadeLauncher : CustomWeapon
 
         projectile.GameObject.AddComponent<CollisionHandler>().Init(ev.Player.GameObject, projectile.Base);
 
-        Random rand = new Random();
-
-        if (rand.Next(1, 100) is 1 or 27 or 74 or 35 or 56 or 6 or 71)
+        if (Loader.Random.Next(100) <= Chance)
         {
-            Log.Debug($"{rand.Next()}");
-            foreach (Item item in ev.Player.Items)
+            try
             {
-                if (Check(item))
+                foreach (Item item in ev.Player.Items)
                 {
-                    Log.Debug("found GL in inventory, doing funni");
-                    ev.Player.ExplodeEffect(ProjectileType.FragGrenade);
-                    ev.Player.AddItem(ItemType.GunE11SR);
-                    ev.Player.AddItem(ItemType.Ammo556x45);
-                    ev.Player.RemoveItem(item);
+                    if (Check(item))
+                    {
+                        Log.Debug("found GL in inventory, doing funni");
+                        Timing.CallDelayed(1f, () =>
+                            {
+                                ev.Player.ExplodeEffect(ProjectileType.FragGrenade);
+                                ev.Player.AddItem(ItemType.GunE11SR);
+                                ev.Player.AddItem(ItemType.Ammo556x45);
+                                ev.Player.RemoveItem(item);
+                            });
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
             }
         }
     }

@@ -47,8 +47,6 @@ public class SniperRifle : CustomWeapon
 
     public byte ReloadCost { get; set; } = 10;
 
-    private byte ReloadAmmoAmount { get; set; }
-
     /// <inheritdoc/>
     public override SpawnProperties? SpawnProperties { get; set; } = new()
     {
@@ -84,7 +82,7 @@ public class SniperRifle : CustomWeapon
     public override float Damage { get; set; } = 90f;
 
     [Description("The amount of extra damage this weapon does to SCPs, as a multiplier.")]
-    public float DamageMultiplierScp { get; set; } = 1.5f;
+    public float DamageMultiplierScp { get; set; } = 3f;
 
     /// <inheritdoc/>
     protected override void OnHurting(HurtingEventArgs ev)

@@ -1,4 +1,4 @@
-﻿using Exiled.Events.EventArgs.Scp0492;
+/* ﻿using Exiled.Events.EventArgs.Scp0492;
 using Waits;
 
 namespace CustomItems.Events
@@ -50,3 +50,4 @@ namespace CustomItems.Events
         }
     }
 }
+*/

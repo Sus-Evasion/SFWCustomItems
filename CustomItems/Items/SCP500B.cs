@@ -23,7 +23,7 @@ using PlayerRoles;
 public class Scp500B : CustomItem
 {
     /// <inheritdoc/>
-    public override uint Id { get; set; } = 18;
+    public override uint Id { get; set; } = 19;
 
     /// <inheritdoc/>
     public override string Name { get; set; } = "SCP500B";
@@ -35,16 +35,18 @@ public class Scp500B : CustomItem
     /// <inheritdoc/>
     public override float Weight { get; set; } = 1f;
 
+    public override bool ShouldMessageOnGban { get; } = true;
+
     /// <inheritdoc/>
     public override SpawnProperties? SpawnProperties { get; set; } = new ()
     {
-        Limit = 1,
+        Limit = 3,
         DynamicSpawnPoints = new List<DynamicSpawnPoint>
         {
             new () { Chance = 50, Location = SpawnLocationType.Inside173Gate },
             new () { Chance = 20, Location = SpawnLocationType.Inside096 },
             new () { Chance = 10, Location = SpawnLocationType.InsideLocker },
-            new () { Chance = 30, Location = SpawnLocationType.InsideHczArmory },
+            new () { Chance = 20, Location = SpawnLocationType.InsideHczArmory },
         },
     };
 

@@ -47,7 +47,7 @@ public class HatofDisguise : CustomItem
     /// Gets or sets how long the SCP-1499 can be wore, before automaticly player takes it off. (set to 0 for no limit).
     /// </summary>
     [Description("How long the Hat can be wore, before automaticly player takes it off. (set to 0 for no limit)")]
-    public float Duration { get; set; } = 15f;
+    public int Duration { get; set; } = 15;
 
     /// <inheritdoc/>
     protected override void SubscribeEvents()
@@ -92,7 +92,7 @@ public class HatofDisguise : CustomItem
     {
         if (!Check(ev.Player.CurrentItem))
             return;
-        AppearanceOptions.ChangeAppearance(ev.Player);
+        AppearanceOptions.ChangeAppearance(ev.Player, Duration);
 
         ev.Player.DisableEffect(EffectType.Invisible);
 

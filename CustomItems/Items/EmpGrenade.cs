@@ -22,10 +22,7 @@ using Exiled.Events.EventArgs.Map;
 using Exiled.Events.EventArgs.Player;
 using Exiled.Events.EventArgs.Scp079;
 using Exiled.Events.Handlers;
-using InventorySystem.Items.Firearms.Attachments;
-using InventorySystem.Items.Firearms.Attachments.Components;
 using MEC;
-using Item = Exiled.API.Features.Items.Item;
 using KeycardPermissions = Interactables.Interobjects.DoorUtils.KeycardPermissions;
 using Player = Exiled.Events.Handlers.Player;
 
@@ -109,7 +106,7 @@ public class EmpGrenade : CustomGrenade
     /// <summary>
     /// Gets or sets how long the EMP effect should last on the rooms affected.
     /// </summary>
-    [Description("How long the EMP effect should last on the rooms affected.")]
+    [Description("How long the EMP effect should last on the rooms affected and SCP 079 signal loss.")]
     public float Duration { get; set; } = 10f;
 
     /// <inheritdoc/>
@@ -188,8 +185,8 @@ public class EmpGrenade : CustomGrenade
             if (p.Role.Is(out Scp079Role scp079))
             {
                 if (scp079.Camera != null && scp079.Camera.Room == room)
-                    scp079.LoseSignal(20);
-                p.ShowHint($"<color=red>you have been jammed by <b>{ev.Player}ith Emp Grenade for 8 Seconds!</color>", 5);
+                    scp079.LoseSignal(Duration);
+                p.ShowHint($"<color=red>you have been jammed by <b>{ev.Player}ith Emp Grenade for {Duration} Seconds!</color>", 5);
             }
         }
 

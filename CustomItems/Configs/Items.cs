@@ -190,10 +190,9 @@ public class Items
         new Scp500B(),
     };
 
-    /*[Description("SCP500-E")]
-    public List<SCP500E> SCP500E { get; private set; } = new()
+    [Description("TaxEvasionPill")]
+    public List<TaxEvasionPill> TaxEvasionPills { get; private set; } = new()
     {
-        new SCP500E(),
+        new TaxEvasionPill(),
     };
-    */
 }

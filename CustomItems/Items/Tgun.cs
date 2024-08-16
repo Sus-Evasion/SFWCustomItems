@@ -19,6 +19,8 @@ using Exiled.API.Features.Doors;
 using Exiled.API.Features.Spawn;
 using Exiled.CustomItems.API.Features;
 using Exiled.Events.EventArgs.Player;
+using InventorySystem.Items.Firearms.Attachments;
+using InventorySystem.Items.Firearms.BasicMessages;
 using UnityEngine;
 using YamlDotNet.Serialization;
 using Random = System.Random;
@@ -57,9 +59,15 @@ public class Tgun : CustomWeapon
     /// <inheritdoc/>
     public override SpawnProperties? SpawnProperties { get; set; } = new();
 
-    /// <inheritdoc/>
-    [Description("The amount of damage the weapon deals when the projectile hits another player.")]
     public override float Damage { get; set; } = 0;
+
+    /// <inheritdoc/>
+    [Description("The amount of damage the weapon deals to user when weapon is used.")]
+    public float DamagePerTp { get; set; } = 50;
+
+    /// <inheritdoc/>
+    [Description("The amount of ammo the weapon takes to teleport user when weapon is used.")]
+    public ushort AmmoCost { get; set; } = 50;
 
     [Description(
         "The zone to which the player will be teleported to. If this is anything but Unspecified it will teleport the player to a random room within that zone")]
@@ -140,9 +148,9 @@ public class Tgun : CustomWeapon
     /// <inheritdoc/>
     protected override void OnShooting(ShootingEventArgs ev)
     {
-        if (ev.Player.Health > 50)
+        if (ev.Player.Health > DamagePerTp)
         {
-            ev.Player.Health -= 50;
+            ev.Player.Health -= DamagePerTp;
             TryTeleport(ev.Player);
             if (DespawnAfterUse)
                 ev.Player.RemoveItem(ev.Item);
@@ -166,13 +174,15 @@ public class Tgun : CustomWeapon
     /// <inheritdoc/>
     protected override void OnReloading(ReloadingWeaponEventArgs ev)
     {
-        if (ev.Player.Ammo[ItemType.Ammo9x19] >= 50)
+        ev.IsAllowed = false;
+        if (ev.Player.Ammo[ItemType.Ammo9x19] >= AmmoCost)
         {
-            ev.Player.Ammo[ItemType.Ammo9x19] -= 49;
+            ev.Player.Ammo[ItemType.Ammo9x19] -= AmmoCost;
+            ev.Player.Connection.Send(new RequestMessage(ev.Firearm.Serial, RequestType.Reload));
+            ev.Firearm.Ammo += 1;
         }
         else
         {
-            ev.IsAllowed = false;
             ev.Player.ShowHint("You do not have enough ammo to reload teleportation gun [Required: 50 9MM]");
         }
     }
