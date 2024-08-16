@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Scp1499.cs" company="Joker119">
 // Copyright (c) Joker119. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -47,13 +47,23 @@ public class SCRAMBLE : CustomItem
     public override float Weight { get; set; } = 1.5f;
 
     /// <inheritdoc/>
-    public override SpawnProperties? SpawnProperties { get; set; } = new();
+    public override SpawnProperties? SpawnProperties { get; set; } = new()
+    {
+        Limit = 1,
+        DynamicSpawnPoints = new List<DynamicSpawnPoint>
+        {
+            new () { Chance = 100, Location = SpawnLocationType.Inside096 },
+        },
+    };
 
     /// <summary>
     /// Gets or sets how long the SCP-1499 can be wore, before automaticly player takes it off. (set to 0 for no limit).
     /// </summary>
     [Description("How long the Hat can be wore, before automaticly player takes it off. (set to 0 for no limit)")]
-    public float Duration { get; set; } = 20f;
+    public int Duration { get; set; } = 10;
+
+    /// <inheritdoc/>
+    public override bool ShouldMessageOnGban { get; } = true;
 
     /// <inheritdoc/>
     protected override void SubscribeEvents()
@@ -127,7 +137,7 @@ public class SCRAMBLE : CustomItem
 
         ev.Player.DisableEffect(EffectType.Invisible);
 
-        Timing.RunCoroutine(DurationTimer(20, ev.Player));
+        Timing.RunCoroutine(DurationTimer(Duration, ev.Player));
 
         Timing.CallDelayed(Duration, () =>
         {
