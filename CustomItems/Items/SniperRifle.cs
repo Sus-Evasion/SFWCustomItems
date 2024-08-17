@@ -55,12 +55,12 @@ public class SniperRifle : CustomWeapon
         {
             new()
             {
-                Chance = 25,
+                Chance = 50,
                 Location = SpawnLocationType.InsideHid,
             },
             new()
             {
-                Chance = 25,
+                Chance = 50,
                 Location = SpawnLocationType.InsideHczArmory,
             },
         },
@@ -82,7 +82,10 @@ public class SniperRifle : CustomWeapon
     public override float Damage { get; set; } = 90f;
 
     [Description("The amount of extra damage this weapon does to SCPs, as a multiplier.")]
-    public float DamageMultiplierScp { get; set; } = 3f;
+    public float DamageMultiplierScp { get; set; } = 5f;
+
+    [Description("The amount of extra damage this weapon does to SCPs, as a multiplier.")]
+    public float DamageMultiplierHuman { get; set; } = 1.5f;
 
     /// <inheritdoc/>
     protected override void OnHurting(HurtingEventArgs ev)
@@ -94,13 +97,9 @@ public class SniperRifle : CustomWeapon
                 float damageTotal = Damage * DamageMultiplierScp;
                 ev.Amount = damageTotal;
             }
-            else if (!ev.Player.IsScp && ev.Player.Role.Type == RoleTypeId.Tutorial)
-            {
-                ev.Amount = -1f;
-            }
             else
             {
-                ev.Amount = Damage;
+                ev.Amount = Damage * DamageMultiplierHuman;
             }
     }
 
